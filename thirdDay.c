@@ -11,33 +11,32 @@ typedef struct {
 }Number;
 
 
-void initStruct(Number * number){
-    number->value = 0;
-    number->cntValue = 0;
-}
-
-void findNumber(char * buffer, const int * lenBuffer, Number ** numbers, int * capacityNumber, int * sizeNumber, int capacityInput){
-    for(int i = 0; i < * lenBuffer; ++i){
-        if(buffer[i] >= '0' && buffer[i] <= '9'){
-            initStruct(&(*numbers)[*capacityNumber]);
+void findNumber(char * buffer, Number ** numbers, int * capacityNumber, int * sizeNumber, int capacityInput){
+    const char *ptr = buffer;
+    int iterator = 0;
+    while(*ptr != '\n'){
+        if(*ptr < '0' || *ptr > '9'){
+            ++iterator;
+            ++ptr;
+            continue;
+        }
+        if(sscanf(ptr, "%d", &(*numbers)[*capacityNumber].value)){
             (*numbers)[*capacityNumber].y_position = capacityInput;
-            while(buffer[i] >= '0' && buffer[i] <= '9'){
-                if ((*numbers)[*capacityNumber].cntValue >= 1) {
-                    (*numbers)[*capacityNumber].value *= 10;
-                }
-                (*numbers)[*capacityNumber].value += buffer[i] - '0';
-                (*numbers)[*capacityNumber].lastIndex = i;
+            while(*ptr && *ptr >= '0' && *ptr <= '9'){
                 ++(*numbers)[*capacityNumber].cntValue;
-                ++i;
-                if(buffer[i] < '0' || buffer[i] > '9'){
-                    if(*capacityNumber + 1 == *sizeNumber){
-                        *sizeNumber *= 2;
-                        *numbers = (Number*)realloc(*numbers, *sizeNumber * sizeof(Number));
-                        ++(*capacityNumber);
-                    }else{
-                        ++(*capacityNumber);
-                    }
+                if(*ptr == '\n'){
+                    break;
                 }
+                ++iterator;
+                ++ptr;
+            }
+            (*numbers)[*capacityNumber].lastIndex = iterator - 1;
+            if(*capacityNumber + 1 == *sizeNumber){
+                *sizeNumber *= 2;
+                *numbers = (Number*)realloc(*numbers, *sizeNumber * sizeof(Number));
+                ++(*capacityNumber);
+            }else{
+                ++(*capacityNumber);
             }
         }
     }
@@ -124,7 +123,7 @@ int main(){
             constLen = len;
             firstIteration = true;
         }
-        findNumber(buffer, &len, &numbers, &capacityNumber, &sizeNumber, capacityWholeInput);
+        findNumber(buffer, &numbers, &capacityNumber, &sizeNumber, capacityWholeInput);
         wholeInput[capacityWholeInput] = buffer;
         if(capacityWholeInput + 1 == sizeForWholeInput){
             sizeForWholeInput*=2;
@@ -139,5 +138,4 @@ int main(){
     free(wholeInput);
     return 0;
 }
-
 
