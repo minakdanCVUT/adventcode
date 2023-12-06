@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+
 #define MAX_NUMS 100
 
 typedef struct {

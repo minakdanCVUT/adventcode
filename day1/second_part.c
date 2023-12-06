@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+
 bool checkIf(const char * str, const int index, const char symb, int len){
     if(symb == 't'){
         if(len == 2){

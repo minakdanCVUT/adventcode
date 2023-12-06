@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
 void addsum(long * sum, const char * buffer, const int * size){
     bool firstDigit = false;
     int lastDigit = 0;

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
 typedef struct{
     int count_red;
     int count_green;
